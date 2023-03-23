@@ -80,13 +80,13 @@ public class PlayerController : CharacterController
         }
 
         //Highlight current interactObj if it can be interacted with
-        //if (interactObj != null
-        //    && interactObj.active
-        //    && !interactObj.hasActivated
-        //    && !interactObj.GetComponent<Outline>())
-        //{
-        //    interactObj.gameObject.AddComponent<Outline>();
-        //}
+        if (interactObj != null
+            && interactObj.active
+            && !interactObj.hasActivated
+            && !interactObj.GetComponent<Outline>())
+        {
+            interactObj.gameObject.AddComponent<Outline>();
+        }
 
 
 
