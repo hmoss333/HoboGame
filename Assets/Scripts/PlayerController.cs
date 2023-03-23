@@ -9,27 +9,22 @@ public class PlayerController : CharacterController
 {
     public static PlayerController instance;
 
-    [SerializeField] float rotSpeed;
+    [SerializeField] float rotSpeed; 
     private float horizontal, vertical;
-    private Vector3 lastDir, lastDir1, lastDir2;
-
+    private Vector3 lastDir, lastDir1, lastDir2; //used for storign raycast directions to always point forward
 
     //[NaughtyAttributes.HorizontalLine]
     //[Header("Player State Variables")]
-    public enum States { wakeUp, idle, interacting, moving, attacking, listening, hurt, dead }
-    public States state;// { get; private set; }
+    public enum States { wakeUp, idle, interacting, moving, attacking, listening, hurt, dead } //releavant player states for the state machine
+    public States state { get; private set; } //used to check current player state
 
-    [NaughtyAttributes.HorizontalLine]
-    [Header("Interact Variables")]
-    [SerializeField] private LayerMask layer;
-    [SerializeField] private float checkDist;
-    [HideInInspector] public InteractObject interactObj { get; private set; }
+    //[NaughtyAttributes.HorizontalLine]
+    //[Header("Interact Variables")]
+    //[SerializeField] private LayerMask layer; //layer for objects that the interact raycast to register
+    //[SerializeField] private float checkDist; //distance from the player that a raycast will register a valid interact object
+    //[HideInInspector] public InteractObject interactObj { get; private set; } //currently recognized interactable object
 
-    [NaughtyAttributes.HorizontalLine]
-    [Header("Player Avatar Variables")]
-    [SerializeField] private GameObject playerAvatar;
-    public InputAction inputMaster { get; private set; }
-    private InputControlScheme controlScheme;
+    private PlayerInputs playerInputs; //this reference is required in any script that uses input reading
 
 
     private void Awake()
@@ -39,8 +34,8 @@ public class PlayerController : CharacterController
         else
             Destroy(this.gameObject);
 
-        inputMaster = new InputAction();
-        inputMaster.Enable();
+        playerInputs = new PlayerInputs();
+        playerInputs.Enable();
     }
 
     override public void Start()
@@ -58,26 +53,26 @@ public class PlayerController : CharacterController
         Ray ray2 = new Ray(transform.position, lastDir2);
         RaycastHit hit, hit1, hit2;
 
-        if (state == States.attacking || state == States.listening)
-        {
-            interactObj = null;
-        }
-        else if (Physics.Raycast(ray, out hit, checkDist, layer))
-        {
-            interactObj = hit.transform.gameObject.GetComponent<InteractObject>();
-        }
-        else if (Physics.Raycast(ray1, out hit1, checkDist, layer))
-        {
-            interactObj = hit1.transform.gameObject.GetComponent<InteractObject>();
-        }
-        else if (Physics.Raycast(ray2, out hit2, checkDist, layer))
-        {
-            interactObj = hit2.transform.gameObject.GetComponent<InteractObject>();
-        }
-        else
-        {
-            interactObj = null;
-        }
+        //if (state == States.attacking || state == States.listening)
+        //{
+        //    interactObj = null;
+        //}
+        //else if (Physics.Raycast(ray, out hit, checkDist, layer))
+        //{
+        //    interactObj = hit.transform.gameObject.GetComponent<InteractObject>();
+        //}
+        //else if (Physics.Raycast(ray1, out hit1, checkDist, layer))
+        //{
+        //    interactObj = hit1.transform.gameObject.GetComponent<InteractObject>();
+        //}
+        //else if (Physics.Raycast(ray2, out hit2, checkDist, layer))
+        //{
+        //    interactObj = hit2.transform.gameObject.GetComponent<InteractObject>();
+        //}
+        //else
+        //{
+        //    interactObj = null;
+        //}
 
         //if (interactObj != null
         //    && interactObj.active
@@ -100,7 +95,7 @@ public class PlayerController : CharacterController
 
         //Store player move values
         //Used in FixedUpdate for correct timing with animation flags
-        Vector2 move = inputMaster.ReadValue<Vector2>();//inputMaster.Player.Move.ReadValue<Vector2>();
+        Vector2 move = playerInputs.Player.Move.ReadValue<Vector2>();
         switch (state)
         {
             case States.wakeUp:
@@ -156,16 +151,16 @@ public class PlayerController : CharacterController
 
 
         //Handle player interaction inputs
-        if (interactObj != null
-            && interactObj.active
-            && inputMaster.triggered)
-        {
-            interactObj.Interact();
-            if (interactObj.active && !interactObj.hasActivated && interactObj.interacting)
-                SetState(States.interacting);
-            else
-                SetState(States.idle);
-        }
+        //if (interactObj != null
+        //    && interactObj.active
+        //    && inputMaster.triggered)
+        //{
+        //    interactObj.Interact();
+        //    if (interactObj.active && !interactObj.hasActivated && interactObj.interacting)
+        //        SetState(States.interacting);
+        //    else
+        //        SetState(States.idle);
+        //}
 
         base.Update();
     }
