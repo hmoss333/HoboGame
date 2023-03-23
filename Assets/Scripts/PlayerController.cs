@@ -11,18 +11,18 @@ public class PlayerController : CharacterController
 
     [SerializeField] float rotSpeed; 
     private float horizontal, vertical;
-    private Vector3 lastDir, lastDir1, lastDir2; //used for storign raycast directions to always point forward
+    private Vector3 lastDir, lastDir1, lastDir2; //used for storing raycast directions to always point forward
 
     //[NaughtyAttributes.HorizontalLine]
     //[Header("Player State Variables")]
-    public enum States { wakeUp, idle, interacting, moving, attacking, listening, hurt, dead } //releavant player states for the state machine
-    public States state { get; private set; } //used to check current player state
+    public enum States { wakeUp, idle, interacting, moving, attacking, listening, hurt, dead } //all possible player states
+    public States state { get; private set; } //current player state
 
-    //[NaughtyAttributes.HorizontalLine]
-    //[Header("Interact Variables")]
-    //[SerializeField] private LayerMask layer; //layer for objects that the interact raycast to register
-    //[SerializeField] private float checkDist; //distance from the player that a raycast will register a valid interact object
-    //[HideInInspector] public InteractObject interactObj { get; private set; } //currently recognized interactable object
+    [NaughtyAttributes.HorizontalLine]
+    [Header("Interact Variables")]
+    [SerializeField] private LayerMask layer; //layer for objects that the interact raycast to register
+    [SerializeField] private float checkDist; //distance from the player that a raycast will register a valid interact object
+    [HideInInspector] public InteractObject interactObj { get; private set; } //currently recognized interactable object
 
     private PlayerInputs playerInputs; //this reference is required in any script that uses input reading
 
@@ -53,27 +53,33 @@ public class PlayerController : CharacterController
         Ray ray2 = new Ray(transform.position, lastDir2);
         RaycastHit hit, hit1, hit2;
 
-        //if (state == States.attacking || state == States.listening)
-        //{
-        //    interactObj = null;
-        //}
-        //else if (Physics.Raycast(ray, out hit, checkDist, layer))
-        //{
-        //    interactObj = hit.transform.gameObject.GetComponent<InteractObject>();
-        //}
-        //else if (Physics.Raycast(ray1, out hit1, checkDist, layer))
-        //{
-        //    interactObj = hit1.transform.gameObject.GetComponent<InteractObject>();
-        //}
-        //else if (Physics.Raycast(ray2, out hit2, checkDist, layer))
-        //{
-        //    interactObj = hit2.transform.gameObject.GetComponent<InteractObject>();
-        //}
-        //else
-        //{
-        //    interactObj = null;
-        //}
+        //Visualize interact rays in the editor
+        Debug.DrawRay(transform.position, rayDir, Color.green);
+        Debug.DrawRay(transform.position, lastDir1, Color.green);
+        Debug.DrawRay(transform.position, lastDir2, Color.green);
 
+        if (state == States.attacking || state == States.listening)
+        {
+            interactObj = null;
+        }
+        else if (Physics.Raycast(ray, out hit, checkDist, layer))
+        {
+            interactObj = hit.transform.gameObject.GetComponent<InteractObject>();
+        }
+        else if (Physics.Raycast(ray1, out hit1, checkDist, layer))
+        {
+            interactObj = hit1.transform.gameObject.GetComponent<InteractObject>();
+        }
+        else if (Physics.Raycast(ray2, out hit2, checkDist, layer))
+        {
+            interactObj = hit2.transform.gameObject.GetComponent<InteractObject>();
+        }
+        else
+        {
+            interactObj = null;
+        }
+
+        //Highlight current interactObj if it can be interacted with
         //if (interactObj != null
         //    && interactObj.active
         //    && !interactObj.hasActivated
@@ -151,16 +157,16 @@ public class PlayerController : CharacterController
 
 
         //Handle player interaction inputs
-        //if (interactObj != null
-        //    && interactObj.active
-        //    && inputMaster.triggered)
-        //{
-        //    interactObj.Interact();
-        //    if (interactObj.active && !interactObj.hasActivated && interactObj.interacting)
-        //        SetState(States.interacting);
-        //    else
-        //        SetState(States.idle);
-        //}
+        if (interactObj != null
+            && interactObj.active
+            && playerInputs.Player.Interact.triggered)
+        {
+            interactObj.Interact();
+            if (interactObj.active && !interactObj.hasActivated && interactObj.interacting)
+                SetState(States.interacting);
+            else
+                SetState(States.idle);
+        }
 
         base.Update();
     }
@@ -213,13 +219,6 @@ public class PlayerController : CharacterController
         //animator.SetBool("isInteracting", state == States.interacting);
         //Listening
         //animator.SetBool("isListening", state == States.listening); //toggle listening animation based on bool value
-    }
-
-
-    //Used for the door controller to set exit direction
-    public void SetLastDir(Vector3 newDir)
-    {
-        lastDir = newDir;
     }
 
 
