@@ -855,20 +855,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31b17d566b64247f7866d053c7ea2514, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  speed: 1
   storedSpeed: 0
   hurt: 0
   dead: 0
   rb: {fileID: 0}
   col: {fileID: 0}
   animator: {fileID: 0}
-  rotSpeed: 0
-  state: 0
-  layer:
-    serializedVersion: 2
-    m_Bits: 0
-  checkDist: 0
-  playerAvatar: {fileID: 0}
+  rotSpeed: 15
 --- !u!54 &1800099291
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -919,7 +913,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: ccc50d631d14df84a982c4f4acd00013, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
