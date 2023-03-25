@@ -344,8 +344,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8494163255502048771}
   - component: {fileID: 13973235590493080}
-  - component: {fileID: 8745925010190754461}
   - component: {fileID: 4732133992396284766}
+  - component: {fileID: 8441910382931982521}
   m_Layer: 6
   m_Name: Car
   m_TagString: Untagged
@@ -394,21 +394,6 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
---- !u!114 &8745925010190754461
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4880228139872484368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39facc4060d40481bb00d00c6d64fd91, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  active: 1
-  hasActivated: 0
-  interacting: 0
 --- !u!65 &4732133992396284766
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -422,6 +407,25 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.1, y: 0.035, z: 0.05}
   m_Center: {x: 0, y: -0.015, z: 0.015}
+--- !u!114 &8441910382931982521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4880228139872484368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34750b2a4184f4503a8620f8e15a5233, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  active: 1
+  hasActivated: 0
+  interacting: 0
+  woodAmount: 0
+  metalAmount: 5
+  clothAmount: 3
+  otherAmount: 3
 --- !u!1 &5838853596386003101
 GameObject:
   m_ObjectHideFlags: 0
